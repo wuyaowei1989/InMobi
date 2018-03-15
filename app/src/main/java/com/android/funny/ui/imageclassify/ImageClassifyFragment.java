@@ -55,6 +55,7 @@ import butterknife.Unbinder;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Consumer;
 
+
 /**
  * Created by Administrator on 2018/1/31.
  */
@@ -129,7 +130,7 @@ public class ImageClassifyFragment extends BaseFragment<ImageClassifyPresenter> 
         mAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-                ShareUtils.shareText(getContext(), mDetectDataList.get(position).getName());
+                ShareUtils.shareText(getActivity(), mDetectDataList.get(position).getName());
             }
         });
         Random random = new Random();
@@ -137,7 +138,7 @@ public class ImageClassifyFragment extends BaseFragment<ImageClassifyPresenter> 
     }
 
     private void setCardAdapter() {
-        mCardAdapter = new CommonAdapter<BaiduPicBean.DataBean>(getContext(), mDataList, R.layout.item_image_card) {
+        mCardAdapter = new CommonAdapter<BaiduPicBean.DataBean>(getActivity(), mDataList, R.layout.item_image_card) {
             @Override
             protected void setListeners(com.android.funny.widget.BaseViewHolder holder, View view, int position) {
                 view.setOnClickListener(holder);
@@ -200,7 +201,7 @@ public class ImageClassifyFragment extends BaseFragment<ImageClassifyPresenter> 
     }
 
     public void dishDetect(BaiduPicBean.DataBean dataBean) {
-        Glide.with(getContext()).asBitmap().load(dataBean.getObjURL()).into(new SimpleTarget<Bitmap>() {
+        Glide.with(getActivity()).asBitmap().load(dataBean.getObjURL()).into(new SimpleTarget<Bitmap>() {
             @Override
             public void onResourceReady(Bitmap resource, Transition<? super Bitmap> transition) {
                 String img = BitmapUtils.base64Encode(BitmapUtils.bitmapToByte(resource));
@@ -283,7 +284,7 @@ public class ImageClassifyFragment extends BaseFragment<ImageClassifyPresenter> 
                     }
                 } else {
                     //未获取权限
-                    Toast.makeText(ImageClassifyFragment.this.getContext(), "您没有授权该权限，请在设置中打开授权", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "您没有授权该权限，请在设置中打开授权", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -307,7 +308,7 @@ public class ImageClassifyFragment extends BaseFragment<ImageClassifyPresenter> 
                             PICK_REQUEST_CODE);
                 } else {
                     //未获取权限
-                    Toast.makeText(ImageClassifyFragment.this.getContext(), "您没有授权该权限，请在设置中打开授权", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "您没有授权该权限，请在设置中打开授权", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -330,7 +331,7 @@ public class ImageClassifyFragment extends BaseFragment<ImageClassifyPresenter> 
                 case PICK_REQUEST_CODE:
                     Uri uri = data.getData();
                     //保存图片
-                    BitmapUtils.saveImageFromGallery(getContext(), uri, mPhotoFile);
+                    BitmapUtils.saveImageFromGallery(getActivity(), uri, mPhotoFile);
                     //显示图片
                     image = BitmapUtils.compressImage(IMAGE_FILE_PATH, 400, 500);
                     detectManualSelPic(image);
@@ -364,7 +365,7 @@ public class ImageClassifyFragment extends BaseFragment<ImageClassifyPresenter> 
 
     @Override
     public void loadAccessTokenDataFail(String s) {
-        Toast.makeText(getContext(), s, Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(), s, Toast.LENGTH_SHORT).show();
     }
 
     @Override

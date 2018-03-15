@@ -86,4 +86,6 @@ public class Constants {
     //百度
     public static final String BAIDU_GRANT_TYPE = "client_credentials";
 
+    //ADview id
+    public static final String AD_VIEW_KEY = "SDK201822151003513y7coxpzhmpanda";
 }

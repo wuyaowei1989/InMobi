@@ -4,8 +4,10 @@ import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 
+import com.android.funny.bean.Constants;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.android.funny.R;
 import com.android.funny.bean.FreshNewsBean;
@@ -14,6 +16,8 @@ import com.android.funny.component.ApplicationComponent;
 import com.android.funny.component.DaggerHttpComponent;
 import com.android.funny.ui.base.BaseFragment;
 import com.android.funny.widget.CustomLoadMoreView;
+import com.kyview.interfaces.AdViewVideoListener;
+import com.kyview.manager.AdViewVideoManager;
 
 import butterknife.BindView;
 import in.srain.cube.views.ptr.PtrDefaultHandler;
@@ -65,6 +69,38 @@ public class JdDetailFragment extends BaseFragment<JanDanPresenter> implements J
 
     @Override
     public void bindView(View view, Bundle savedInstanceState) {
+        // 只请求广告，适用于预加载
+        AdViewVideoManager.getInstance(getContext()).requestAd(getContext(), Constants.AD_VIEW_KEY, new AdViewVideoListener() {
+            @Override
+            public void onAdPlayStart(String s) {
+
+            }
+
+            @Override
+            public void onAdPlayEnd(String s, Boolean aBoolean) {
+
+            }
+
+            @Override
+            public void onAdFailed(String s) {
+                Log.i("AdVideoActivity", "onAdFailed");
+            }
+
+            @Override
+            public void onAdRecieved(String s) {
+                AdViewVideoManager.getInstance(getContext()).playVideo(getContext(), Constants.AD_VIEW_KEY);
+            }
+
+            @Override
+            public void onAdClose(String s) {
+
+            }
+
+            @Override
+            public void onAdReady(String s) {
+
+            }
+        });
         mPtrFrameLayout.disableWhenHorizontalMove(true);
         mPtrFrameLayout.setPtrHandler(new PtrHandler() {
             @Override

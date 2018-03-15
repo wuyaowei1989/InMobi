@@ -2,6 +2,7 @@ package com.android.funny.ui.news;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -103,7 +104,7 @@ public class ImageBrowseActivity extends BaseActivity<ArticleReadPresenter> impl
 
     @Override
     public void bindView(View view, Bundle savedInstanceState) {
-        StatusBarUtil.setColor(this, ContextCompat.getColor(this, android.R.color.black));
+        StatusBarUtil.setColor(this, Color.parseColor("#000000"));
         mRelativeLayout.getBackground().setAlpha(255);
         mSwipeBackHelper.setSwipeBackEnable(true);
         mSwipeBackLayout.setDragDirectMode(SwipeBackLayout.DragDirectMode.VERTICAL);
