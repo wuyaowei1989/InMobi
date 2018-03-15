@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.android.funny.component.ApplicationComponent;
 import com.android.funny.ui.base.BaseActivity;
+import com.kyview.InitConfiguration;
 
 import java.util.concurrent.TimeUnit;
 
@@ -33,7 +34,7 @@ public class WelcomeActivity extends BaseActivity {
     @BindView(R.id.fl_ad)
     FrameLayout flAd;
     CompositeDisposable mCompositeDisposable = new CompositeDisposable();
-
+    public static InitConfiguration initConfiguration;
     @Override
     public int getContentLayout() {
         return R.layout.activity_welcome;

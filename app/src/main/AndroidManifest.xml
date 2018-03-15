@@ -94,6 +94,16 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+
+        <!-- Must declare it for Adivew SDK -->
+        <activity
+            android:name="com.kuaiyou.video.vast.activity.VASTAdActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
+            android:hardwareAccelerated="true"
+            android:screenOrientation="landscape"/>
+        <service android:name="com.kyview.DownloadService" />
+        <activity android:name="com.kyview.AdviewWebView" />
+        <activity android:name="com.kyview.AdActivity" />
     </application>
 
 </manifest>
