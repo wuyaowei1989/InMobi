@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.android.funny.R;
@@ -41,6 +42,8 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.hss01248.dialog.StyledDialog;
 import com.hss01248.dialog.interfaces.MyItemDialogListener;
+import com.kyview.interfaces.AdViewBannerListener;
+import com.kyview.manager.AdViewBannerManager;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 
 import java.io.File;
@@ -72,6 +75,8 @@ public class ImageClassifyFragment extends BaseFragment<ImageClassifyPresenter> 
     ImageView emptyImg;
     @BindView(R.id.empty_layout)
     ImageView emptyLayout;
+    @BindView(R.id.adLayout)
+    LinearLayout mAdLayout;
 
     Unbinder unbinder;
 
@@ -135,6 +140,45 @@ public class ImageClassifyFragment extends BaseFragment<ImageClassifyPresenter> 
         });
         Random random = new Random();
         mPresenter.getImageList("高清美食图片", random.nextInt(10), 20);
+        View adView = AdViewBannerManager.getInstance(getActivity()).getAdViewLayout(getActivity(),
+                Constants.AD_VIEW_KEY);
+        if (null != adView) {
+            ViewGroup parent = (ViewGroup) adView.getParent();
+            if (parent != null) {
+                parent.removeAllViews();
+            }
+        }
+        AdViewBannerManager.getInstance(getActivity()).requestAd(getActivity(), Constants.AD_VIEW_KEY, new AdViewBannerListener() {
+            @Override
+            public void onAdClick(String s) {
+
+            }
+
+            @Override
+            public void onAdDisplay(String s) {
+
+            }
+
+            @Override
+            public void onAdClose(String s) {
+                if (null != mAdLayout)
+                    mAdLayout.removeView(mAdLayout.findViewWithTag(s));
+            }
+
+            @Override
+            public void onAdFailed(String s) {
+
+            }
+
+            @Override
+            public void onAdReady(String s) {
+
+            }
+        });
+        adView.setTag(Constants.AD_VIEW_KEY);
+        mAdLayout.addView(adView);
+        mAdLayout.invalidate();
+
     }
 
     private void setCardAdapter() {
@@ -229,6 +273,8 @@ public class ImageClassifyFragment extends BaseFragment<ImageClassifyPresenter> 
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+        if (null != mAdLayout)
+            mAdLayout.removeAllViews();
     }
 
     private void showDialog() {

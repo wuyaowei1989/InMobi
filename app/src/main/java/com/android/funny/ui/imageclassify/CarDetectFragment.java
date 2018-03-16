@@ -11,10 +11,12 @@ import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -42,6 +44,8 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.hss01248.dialog.StyledDialog;
 import com.hss01248.dialog.interfaces.MyItemDialogListener;
+import com.kyview.interfaces.AdViewBannerListener;
+import com.kyview.manager.AdViewBannerManager;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 
 import java.io.File;
@@ -74,6 +78,8 @@ public class CarDetectFragment extends BaseFragment<ImageClassifyPresenter> impl
     ImageView emptyLayout;
     @BindView(R.id.layout_name_tv)
     TextView layoutNameTv;
+    @BindView(R.id.adLayout)
+    LinearLayout mAdLayout;
 
     Unbinder unbinder;
 
@@ -142,6 +148,46 @@ public class CarDetectFragment extends BaseFragment<ImageClassifyPresenter> impl
         });
         Random random = new Random();
         mPresenter.getImageList("高清汽车图片", random.nextInt(8), 30);
+
+        View adView = AdViewBannerManager.getInstance(getActivity()).getAdViewLayout(getActivity(),
+                Constants.AD_VIEW_KEY);
+        if (null != adView) {
+            ViewGroup parent = (ViewGroup) adView.getParent();
+            if (parent != null) {
+                parent.removeAllViews();
+            }
+        }
+        AdViewBannerManager.getInstance(getActivity()).requestAd(getActivity(), Constants.AD_VIEW_KEY, new AdViewBannerListener() {
+            @Override
+            public void onAdClick(String s) {
+
+            }
+
+            @Override
+            public void onAdDisplay(String s) {
+
+            }
+
+            @Override
+            public void onAdClose(String s) {
+                if (null != mAdLayout)
+                    mAdLayout.removeView(mAdLayout.findViewWithTag(s));
+            }
+
+            @Override
+            public void onAdFailed(String s) {
+                Log.d("AdView", "error: " +s);
+            }
+
+            @Override
+            public void onAdReady(String s) {
+
+            }
+        });
+        adView.setTag(Constants.AD_VIEW_KEY);
+        mAdLayout.addView(adView);
+        mAdLayout.invalidate();
+
     }
 
     private void setCardAdapter() {
@@ -237,6 +283,9 @@ public class CarDetectFragment extends BaseFragment<ImageClassifyPresenter> impl
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+        if(null!=mAdLayout) {
+            mAdLayout.removeAllViews();
+        }
     }
 
     private void showDialog() {

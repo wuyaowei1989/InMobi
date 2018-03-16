@@ -4,13 +4,17 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.funny.R;
+import com.android.funny.bean.Constants;
 import com.android.funny.component.ApplicationComponent;
 import com.android.funny.ui.base.BaseFragment;
+import com.kyview.interfaces.AdViewInstlListener;
+import com.kyview.manager.AdViewInstlManager;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -84,7 +88,32 @@ public class PersonalFragment extends BaseFragment {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tvUrl:
-               toWeb(getResources().getString(R.string.willUrl));
+                AdViewInstlManager.getInstance(getContext()).requestAd(getContext(), Constants.AD_VIEW_KEY, new AdViewInstlListener() {
+                    @Override
+                    public void onAdClick(String s) {
+
+                    }
+
+                    @Override
+                    public void onAdDisplay(String s) {
+
+                    }
+
+                    @Override
+                    public void onAdDismiss(String s) {
+
+                    }
+
+                    @Override
+                    public void onAdRecieved(String s) {
+                        AdViewInstlManager.getInstance(getContext()).showAd(getContext(), Constants.AD_VIEW_KEY);
+                    }
+
+                    @Override
+                    public void onAdFailed(String s) {
+                        Log.d("AdView", "error: " +s);
+                    }
+                });
                 break;
             case R.id.tvGithubUrl:
                 toWeb(getResources().getString(R.string.githubUrl));

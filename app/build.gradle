@@ -113,6 +113,7 @@ dependencies {
     compile 'com.github.hss01248:DialogUtil:1.2.6'
     testCompile 'junit:junit:4.12'
     implementation files('libs/AdViewSDK_Android.jar')
+    implementation files('libs/play-services_aar_adapter.jar')
 }
 
     repositories {

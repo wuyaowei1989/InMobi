@@ -83,7 +83,7 @@ public class JdDetailFragment extends BaseFragment<JanDanPresenter> implements J
 
             @Override
             public void onAdFailed(String s) {
-                Log.i("AdVideoActivity", "onAdFailed");
+                Log.i("AdView", "video onAdFailed" +s);
             }
 
             @Override
